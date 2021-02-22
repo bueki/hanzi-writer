@@ -83,7 +83,7 @@ export default class HanziWriterRenderer
 
     for (const userStrokeId in this._userStrokeRenderers) {
       if (!userStrokes[userStrokeId]) {
-        this._userStrokeRenderers[userStrokeId]?.destroy();
+        this._userStrokeRenderers[userStrokeId] && this._userStrokeRenderers[userStrokeId]!.destroy();
         delete this._userStrokeRenderers[userStrokeId];
       }
     }

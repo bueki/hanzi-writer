@@ -1,8 +1,8 @@
 import { extendStart } from '../../geometry';
-import { drawPath, pathStringToCanvas } from './canvasUtils';
-import StrokeRendererBase from '../StrokeRendererBase';
 import Stroke from '../../models/Stroke';
 import { ColorObject, Point } from '../../typings/types';
+import StrokeRendererBase from '../StrokeRendererBase';
+import { drawPath, pathStringToCanvas } from './canvasUtils';
 
 /** this is a stroke composed of several stroke parts */
 export default class StrokeRenderer extends StrokeRendererBase {
@@ -43,7 +43,7 @@ export default class StrokeRenderer extends StrokeRendererBase {
     if (this._path2D) {
       ctx.clip(this._path2D);
     } else {
-      this._pathCmd?.(ctx);
+      this._pathCmd && this._pathCmd(ctx);
       // wechat bugs out if the clip path isn't stroked or filled
       ctx.globalAlpha = 0;
       ctx.stroke();

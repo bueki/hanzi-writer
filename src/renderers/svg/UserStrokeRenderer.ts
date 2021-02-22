@@ -1,7 +1,7 @@
-import * as svg from './svgUtils';
 import { getPathString } from '../../geometry';
 import { ColorObject, Point } from '../../typings/types';
 import SVGRenderTarget from './RenderTarget';
+import * as svg from './svgUtils';
 
 export type UserStrokeProps = {
   strokeWidth: number;
@@ -24,8 +24,8 @@ export default class UserStrokeRenderer {
       return;
     }
     if (
-      props.strokeColor !== this._oldProps?.strokeColor ||
-      props.strokeWidth !== this._oldProps?.strokeWidth
+      props.strokeColor !== (this._oldProps ? this._oldProps.strokeColor : undefined) ||
+      props.strokeWidth !== (this._oldProps ? this._oldProps.strokeWidth : undefined)
     ) {
       const { r, g, b, a } = props.strokeColor;
       svg.attrs(this._path, {
@@ -36,10 +36,10 @@ export default class UserStrokeRenderer {
         'stroke-linejoin': 'round',
       });
     }
-    if (props.opacity !== this._oldProps?.opacity) {
+    if (props.opacity !== (this._oldProps ? this._oldProps.opacity : undefined)) {
       svg.attr(this._path, 'opacity', props.opacity.toString());
     }
-    if (props.points !== this._oldProps?.points) {
+    if (props.points !== (this._oldProps ? this._oldProps.points : undefined)) {
       svg.attr(this._path, 'd', getPathString(props.points));
     }
     this._oldProps = props;

@@ -1,10 +1,10 @@
-import { counter } from '../../utils';
-import * as svg from './svgUtils';
 import { extendStart, getPathString } from '../../geometry';
-import StrokeRendererBase from '../StrokeRendererBase';
 import Stroke from '../../models/Stroke';
-import SVGRenderTarget from './RenderTarget';
 import { ColorObject } from '../../typings/types';
+import { counter } from '../../utils';
+import StrokeRendererBase from '../StrokeRendererBase';
+import SVGRenderTarget from './RenderTarget';
+import * as svg from './svgUtils';
 
 const STROKE_WIDTH = 200;
 
@@ -60,7 +60,7 @@ export default class StrokeRenderer extends StrokeRendererBase {
       return;
     }
 
-    if (props.displayPortion !== this._oldProps?.displayPortion) {
+    if (props.displayPortion !== (this._oldProps ? this._oldProps.displayPortion : undefined)) {
       this._animationPath.style.strokeDashoffset = this._getStrokeDashoffset(
         props.displayPortion,
       ).toString();
@@ -73,7 +73,7 @@ export default class StrokeRenderer extends StrokeRendererBase {
       svg.attrs(this._animationPath, { stroke: `rgba(${r},${g},${b},${a})` });
     }
 
-    if (props.opacity !== this._oldProps?.opacity) {
+    if (props.opacity !== (this._oldProps ? this._oldProps.opacity : undefined)) {
       this._animationPath.style.opacity = props.opacity.toString();
     }
     this._oldProps = props;

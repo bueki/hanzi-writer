@@ -72,7 +72,7 @@ export default class HanziWriter {
   ) {
     const loadingManager = (() => {
       const { _loadingManager, _loadingOptions } = HanziWriter;
-      if (_loadingManager?._loadingChar === character && _loadingOptions === options) {
+      if (_loadingManager && _loadingManager._loadingChar === character && _loadingOptions === options) {
         return _loadingManager;
       }
       return new LoadingManager({ ...defaultOptions, ...options });
@@ -142,8 +142,8 @@ export default class HanziWriter {
   ) {
     this._options.showCharacter = true;
     return this._withData(() =>
-      this._renderState
-        ?.run(
+      this._renderState && this._renderState
+        .run(
           characterActions.showCharacter(
             'main',
             this._character!,
@@ -153,7 +153,7 @@ export default class HanziWriter {
           ),
         )
         .then((res) => {
-          options.onComplete?.(res);
+          options.onComplete && options.onComplete(res);
           return res;
         }),
     );
@@ -167,8 +167,8 @@ export default class HanziWriter {
   ) {
     this._options.showCharacter = false;
     return this._withData(() =>
-      this._renderState
-        ?.run(
+      this._renderState && this._renderState
+        .run(
           characterActions.hideCharacter(
             'main',
             this._character!,
@@ -178,7 +178,7 @@ export default class HanziWriter {
           ),
         )
         .then((res) => {
-          options.onComplete?.(res);
+          options.onComplete && options.onComplete(res);
           return res;
         }),
     );
@@ -192,8 +192,8 @@ export default class HanziWriter {
     this.cancelQuiz();
 
     return this._withData(() =>
-      this._renderState
-        ?.run(
+      this._renderState && this._renderState
+        .run(
           characterActions.animateCharacter(
             'main',
             this._character!,
@@ -203,7 +203,7 @@ export default class HanziWriter {
           ),
         )
         .then((res) => {
-          options.onComplete?.(res);
+          options.onComplete && options.onComplete(res);
           return res;
         }),
     );
@@ -217,8 +217,8 @@ export default class HanziWriter {
   ) {
     this.cancelQuiz();
     return this._withData(() =>
-      this._renderState
-        ?.run(
+      this._renderState && this._renderState
+        .run(
           characterActions.animateSingleStroke(
             'main',
             this._character!,
@@ -227,7 +227,7 @@ export default class HanziWriter {
           ),
         )
         .then((res) => {
-          options.onComplete?.(res);
+          options.onComplete && options.onComplete(res);
           return res;
         }),
     );
@@ -253,7 +253,7 @@ export default class HanziWriter {
           ),
         )
         .then((res) => {
-          options.onComplete?.(res);
+          options.onComplete && options.onComplete(res);
           return res;
         });
     };
@@ -279,11 +279,11 @@ export default class HanziWriter {
   }
 
   pauseAnimation() {
-    return this._withData(() => this._renderState?.pauseAll());
+    return this._withData(() => this._renderState && this._renderState.pauseAll());
   }
 
   resumeAnimation() {
-    return this._withData(() => this._renderState?.resumeAll());
+    return this._withData(() => this._renderState && this._renderState.resumeAll());
   }
 
   showOutline(
@@ -294,8 +294,8 @@ export default class HanziWriter {
   ) {
     this._options.showOutline = true;
     return this._withData(() =>
-      this._renderState
-        ?.run(
+      this._renderState && this._renderState
+        .run(
           characterActions.showCharacter(
             'outline',
             this._character!,
@@ -305,7 +305,7 @@ export default class HanziWriter {
           ),
         )
         .then((res) => {
-          options.onComplete?.(res);
+          options.onComplete && options.onComplete(res);
           return res;
         }),
     );
@@ -319,8 +319,8 @@ export default class HanziWriter {
   ) {
     this._options.showOutline = false;
     return this._withData(() =>
-      this._renderState
-        ?.run(
+      this._renderState && this._renderState
+        .run(
           characterActions.hideCharacter(
             'outline',
             this._character!,
@@ -330,7 +330,7 @@ export default class HanziWriter {
           ),
         )
         .then((res) => {
-          options.onComplete?.(res);
+          options.onComplete && options.onComplete(res);
           return res;
         }),
     );
@@ -358,7 +358,7 @@ export default class HanziWriter {
 
     this._options[colorName] = colorVal as any;
 
-    const duration = options.duration ?? this._options.strokeFadeDuration;
+    const duration = options.duration ? options.duration : this._options.strokeFadeDuration;
 
     mutations = mutations.concat(
       characterActions.updateColor(colorName, mappedColor, duration),
@@ -370,8 +370,8 @@ export default class HanziWriter {
     }
 
     return this._withData(() =>
-      this._renderState?.run(mutations).then((res) => {
-        options.onComplete?.(res);
+      this._renderState && this._renderState.run(mutations).then((res) => {
+        options.onComplete && options.onComplete(res);
         return res;
       }),
     );
@@ -501,7 +501,7 @@ export default class HanziWriter {
       }
     });
     this.target.addPointerEndListener(() => {
-      this._quiz?.endUserStroke();
+      this._quiz && this._quiz.endUserStroke();
     });
   }
 }

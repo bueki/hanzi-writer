@@ -1,5 +1,5 @@
-import { createElm, attrs } from './svgUtils';
 import RenderTargetBase from '../RenderTargetBase';
+import { attrs, createElm } from './svgUtils';
 
 export default class RenderTarget extends RenderTargetBase<SVGSVGElement | SVGElement> {
   static init(elmOrId: Element | string, width = '100%', height = '100%') {
@@ -58,7 +58,7 @@ export default class RenderTarget extends RenderTargetBase<SVGSVGElement | SVGEl
       this._pt.x = evt.clientX;
       this._pt.y = evt.clientY;
       if ('getScreenCTM' in this.node) {
-        const localPt = this._pt.matrixTransform(this.node.getScreenCTM()?.inverse());
+        const localPt = this._pt.matrixTransform(this.node.getScreenCTM() !== null ? this.node.getScreenCTM()!!.inverse() : undefined);
         return { x: localPt.x, y: localPt.y };
       }
     }
@@ -71,7 +71,7 @@ export default class RenderTarget extends RenderTargetBase<SVGSVGElement | SVGEl
       this._pt.y = evt.touches[0].clientY;
       if ('getScreenCTM' in this.node) {
         const localPt = this._pt.matrixTransform(
-          (this.node as SVGSVGElement).getScreenCTM()?.inverse(),
+          (this.node as SVGSVGElement).getScreenCTM() ? (this.node as SVGSVGElement).getScreenCTM()!!.inverse() : undefined,
         );
         return { x: localPt.x, y: localPt.y };
       }

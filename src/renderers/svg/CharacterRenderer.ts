@@ -1,9 +1,9 @@
-import { isMsBrowser } from '../../utils';
-import StrokeRenderer from './StrokeRenderer';
-import SVGRenderTarget from './RenderTarget';
 import Character from '../../models/Character';
-import { ColorObject } from '../../typings/types';
 import { StrokeRenderState } from '../../RenderState';
+import { ColorObject } from '../../typings/types';
+import { isMsBrowser } from '../../utils';
+import SVGRenderTarget from './RenderTarget';
+import StrokeRenderer from './StrokeRenderer';
 
 type SvgCharacterRenderProps = {
   opacity: number;
@@ -36,7 +36,7 @@ export default class CharacterRenderer {
       return;
     }
     const { opacity, strokes, strokeColor, radicalColor = null } = props;
-    if (opacity !== this._oldProps?.opacity) {
+    if (opacity !== (this._oldProps ? this._oldProps.opacity : undefined)) {
       this._group.style.opacity = opacity.toString();
       // MS browsers seem to have a bug where if SVG is set to display:none, it sometimes breaks.
       // More info: https://github.com/chanind/hanzi-writer/issues/164
@@ -44,7 +44,7 @@ export default class CharacterRenderer {
       if (!isMsBrowser) {
         if (opacity === 0) {
           this._group.style.display = 'none';
-        } else if (this._oldProps?.opacity === 0) {
+        } else if ((this._oldProps ? this._oldProps.opacity : undefined) === 0) {
           this._group.style.removeProperty('display');
         }
       }
@@ -54,11 +54,11 @@ export default class CharacterRenderer {
       strokeColor !== this._oldProps.strokeColor ||
       radicalColor !== this._oldProps.radicalColor;
 
-    if (colorsChanged || strokes !== this._oldProps?.strokes) {
+    if (colorsChanged || strokes !== (this._oldProps ? this._oldProps.strokes : undefined)) {
       for (let i = 0; i < this._strokeRenderers.length; i++) {
         if (
-          !colorsChanged &&
-          this._oldProps?.strokes &&
+          !colorsChanged && this._oldProps &&
+          this._oldProps.strokes &&
           strokes[i] === this._oldProps.strokes[i]
         ) {
           continue;

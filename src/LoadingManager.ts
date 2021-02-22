@@ -22,12 +22,12 @@ export default class LoadingManager {
     // these wrappers ignore all responses except the most recent.
     const wrappedResolve = (data: CharacterJson) => {
       if (count === this._loadCounter) {
-        this._resolve?.(data);
+        this._resolve && this._resolve(data);
       }
     };
     const wrappedReject = (reason?: Error | string) => {
       if (count === this._loadCounter) {
-        this._reject?.(reason);
+        this._reject && this._reject(reason);
       }
     };
 
@@ -58,7 +58,7 @@ export default class LoadingManager {
     )
       .then((data: CharacterJson) => {
         this._isLoading = false;
-        this._options.onLoadCharDataSuccess?.(data);
+        this._options.onLoadCharDataSuccess && this._options.onLoadCharDataSuccess(data);
         return data;
       })
       .catch((reason) => {

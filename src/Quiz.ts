@@ -1,14 +1,14 @@
-import strokeMatches from './strokeMatches';
-import UserStroke from './models/UserStroke';
-import Positioner from './Positioner';
-import { counter, colorStringToVals } from './utils';
-import * as quizActions from './quizActions';
-import * as geometry from './geometry';
 import * as characterActions from './characterActions';
+import * as geometry from './geometry';
 import Character from './models/Character';
-import { ParsedHanziWriterOptions, Point, StrokeData } from './typings/types';
-import RenderState from './RenderState';
+import UserStroke from './models/UserStroke';
 import { MutationChain } from './Mutation';
+import Positioner from './Positioner';
+import * as quizActions from './quizActions';
+import RenderState from './RenderState';
+import strokeMatches from './strokeMatches';
+import { ParsedHanziWriterOptions, Point, StrokeData } from './typings/types';
+import { colorStringToVals, counter } from './utils';
 
 const getDrawnPath = (userStroke: UserStroke) => ({
   pathString: geometry.getPathString(userStroke.externalPoints),
@@ -78,7 +78,7 @@ export default class Quiz {
     this._renderState.run(
       quizActions.removeUserStroke(
         this._userStroke.id,
-        this._options!.drawingFadeDuration ?? 300,
+        this._options!.drawingFadeDuration ? this._options!.drawingFadeDuration : 300,
       ),
     );
 
@@ -164,7 +164,7 @@ export default class Quiz {
       strokeHighlightDuration,
     } = this._options;
 
-    onCorrectStroke?.(this._getStrokeData(true));
+    onCorrectStroke && onCorrectStroke(this._getStrokeData(true));
 
     let animation: MutationChain = characterActions.showStroke(
       'main',
@@ -179,7 +179,7 @@ export default class Quiz {
 
     if (isComplete) {
       this._isActive = false;
-      onComplete?.({
+      onComplete && onComplete({
         character: symbol,
         totalMistakes: this._totalMistakes,
       });
@@ -199,7 +199,7 @@ export default class Quiz {
   _handleFailure() {
     this._mistakesOnStroke += 1;
     this._totalMistakes += 1;
-    this._options!.onMistake?.(this._getStrokeData());
+    this._options!.onMistake && this._options!.onMistake(this._getStrokeData());
   }
 
   _getCurrentStroke() {

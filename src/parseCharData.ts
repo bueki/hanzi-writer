@@ -5,7 +5,7 @@ import Stroke from './models/Stroke';
 import { CharacterJson } from './typings/types';
 
 function generateStrokes({ radStrokes, strokes, medians }: CharacterJson) {
-  const isInRadical = (strokeNum: number) => (radStrokes?.indexOf(strokeNum) ?? -1) >= 0;
+  const isInRadical = (strokeNum: number) => (radStrokes ? radStrokes.indexOf(strokeNum) : -1) >= 0;
   return strokes.map((path, index) => {
     const points = medians[index].map((pointData) => {
       const [x, y] = pointData;

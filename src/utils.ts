@@ -134,10 +134,10 @@ export function objRepeat<T>(item: T, times: number) {
   return obj;
 }
 
-const ua = globalObj.navigator?.userAgent || '';
+const ua = globalObj.navigator === undefined ? '' : globalObj.navigator.userAgent;
 
 export const isMsBrowser =
   ua.indexOf('MSIE ') > 0 || ua.indexOf('Trident/') > 0 || ua.indexOf('Edge/') > 0;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-export const noop = () => {};
+export const noop = () => { };

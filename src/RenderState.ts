@@ -1,12 +1,7 @@
 import Character from './models/Character';
 import { GenericMutation } from './Mutation';
-import {
-  ColorObject,
-  OnCompleteFunction,
-  Point,
-  RecursivePartial,
-} from './typings/types';
-import { copyAndMergeDeep, colorStringToVals, noop } from './utils';
+import { ColorObject, OnCompleteFunction, Point, RecursivePartial } from './typings/types';
+import { colorStringToVals, copyAndMergeDeep, noop } from './utils';
 
 export type StrokeRenderState = {
   opacity: number;
@@ -36,9 +31,9 @@ export type RenderStateObject = {
   userStrokes: Record<
     string,
     | {
-        points: Point[];
-        opacity: number;
-      }
+      points: Point[];
+      opacity: number;
+    }
     | undefined
   > | null;
 };
@@ -224,7 +219,7 @@ export default class RenderState {
       mutationChain._mutations[i].cancel(this);
     }
 
-    mutationChain._resolve?.({ canceled: true });
+    mutationChain._resolve && mutationChain._resolve({ canceled: true });
 
     this._mutationChains = this._mutationChains.filter(
       (chain) => chain !== mutationChain,

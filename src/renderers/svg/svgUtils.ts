@@ -20,5 +20,5 @@ export function urlIdRef(id: string) {
 }
 
 export function removeElm(elm: Element | undefined) {
-  elm?.parentNode?.removeChild(elm);
+  elm && elm.parentNode && elm.parentNode.removeChild(elm);
 }

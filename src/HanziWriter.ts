@@ -1,30 +1,26 @@
-import RenderState from './RenderState';
+import I18nCode from 'models/I18nCode';
+
+import * as characterActions from './characterActions';
+import defaultOptions from './defaultOptions';
+import LoadingManager from './LoadingManager';
+import Character from './models/Character';
+import { GenericMutation } from './Mutation';
 import parseCharData from './parseCharData';
 import Positioner from './Positioner';
 import Quiz from './Quiz';
-import svgRenderer from './renderers/svg';
 import canvasRenderer from './renderers/canvas';
-import defaultOptions from './defaultOptions';
-import LoadingManager from './LoadingManager';
-import * as characterActions from './characterActions';
-import { trim, colorStringToVals } from './utils';
-import Character from './models/Character';
 import HanziWriterRendererBase, {
-  HanziWriterRendererConstructor,
+    HanziWriterRendererConstructor
 } from './renderers/HanziWriterRendererBase';
 import RenderTargetBase from './renderers/RenderTargetBase';
-import { GenericMutation } from './Mutation';
-
+import svgRenderer from './renderers/svg';
+import RenderState from './RenderState';
 // Typings
 import {
-  ColorOptions,
-  HanziWriterOptions,
-  LoadingManagerOptions,
-  OnCompleteFunction,
-  ParsedHanziWriterOptions,
-  QuizOptions,
-  RenderTargetInitFunction,
+    ColorOptions, HanziWriterOptions, LoadingManagerOptions, OnCompleteFunction,
+    ParsedHanziWriterOptions, QuizOptions, RenderTargetInitFunction
 } from './typings/types';
+import { colorStringToVals, trim } from './utils';
 
 // Export type interfaces
 export * from './typings/types';
@@ -87,17 +83,35 @@ export default class HanziWriter {
     return loadingManager.loadCharData(character);
   }
 
-  static getScalingTransform(width: number, height: number, padding = 0) {
+  static getScalingTransform(
+    width: number,
+    height: number,
+    padding = 0,
+    i18n: string = I18nCode.I18nCodeJA,
+  ) {
     const positioner = new Positioner({ width, height, padding });
-    return {
-      x: positioner.xOffset,
-      y: positioner.yOffset,
-      scale: positioner.scale,
-      transform: trim(`
+    switch (i18n) {
+      case I18nCode.I18nCodeCN:
+        return {
+          x: positioner.xOffset,
+          y: positioner.yOffset,
+          scale: positioner.scale,
+          transform: trim(`
         translate(${positioner.xOffset}, ${positioner.height - positioner.yOffset})
         scale(${positioner.scale}, ${-1 * positioner.scale})
       `).replace(/\s+/g, ' '),
-    };
+        };
+      default:
+        return {
+          x: positioner.xOffset,
+          y: positioner.yOffset,
+          scale: positioner.scale,
+          transform: trim(`scale(${positioner.scale}, ${positioner.scale})`).replace(
+            /\s+/g,
+            ' ',
+          ),
+        };
+    }
   }
 
   constructor(element: string | HTMLElement, options: Partial<HanziWriterOptions> = {}) {
@@ -393,6 +407,7 @@ export default class HanziWriter {
     if (this._renderState) {
       this._renderState.cancelAll();
     }
+    const i18n = this._options.i18n;
     this._hanziWriterRenderer = null;
     this._withDataPromise = this._loadingManager
       .loadCharData(char)
@@ -402,7 +417,7 @@ export default class HanziWriter {
           return;
         }
 
-        this._character = parseCharData(char, pathStrings);
+        this._character = parseCharData(i18n, char, pathStrings);
         const { width, height, padding } = this._options;
         this._positioner = new Positioner({ width, height, padding });
         const hanziWriterRenderer = new this._renderer.HanziWriterRenderer(

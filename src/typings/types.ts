@@ -1,7 +1,7 @@
-import RenderTargetBase from '../renderers/RenderTargetBase';
 import { HanziWriterRendererConstructor } from '../renderers/HanziWriterRendererBase';
-import type { PositionerOptions } from '../Positioner';
+import RenderTargetBase from '../renderers/RenderTargetBase';
 
+import type { PositionerOptions } from '../Positioner';
 export type { PositionerOptions };
 
 export type CharacterJson = {
@@ -78,6 +78,8 @@ export type LoadingManagerOptions = {
 };
 
 type BaseHanziWriterOptions = {
+  /** Default: ja */
+  i18n: 'ja' | 'zh-cn';
   showOutline: boolean;
   showCharacter: boolean;
   /** Default: svg */

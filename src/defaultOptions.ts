@@ -1,7 +1,8 @@
-import { HanziWriterOptions } from './typings/types';
 import defaultCharDataLoader from './defaultCharDataLoader';
+import { HanziWriterOptions } from './typings/types';
 
 const defaultOptions: HanziWriterOptions = {
+  i18n: 'ja',
   charDataLoader: defaultCharDataLoader,
   onLoadCharDataError: null,
   onLoadCharDataSuccess: null,

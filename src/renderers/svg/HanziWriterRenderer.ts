@@ -1,11 +1,13 @@
-import CharacterRenderer from './CharacterRenderer';
-import UserStrokeRenderer, { UserStrokeProps } from './UserStrokeRenderer';
-import * as svg from './svgUtils';
+import I18nCode from 'models/I18nCode';
+
 import Character from '../../models/Character';
 import Positioner from '../../Positioner';
-import SVGRenderTarget from './RenderTarget';
-import HanziWriterRendererBase from '../HanziWriterRendererBase';
 import { RenderStateObject } from '../../RenderState';
+import HanziWriterRendererBase from '../HanziWriterRendererBase';
+import CharacterRenderer from './CharacterRenderer';
+import SVGRenderTarget from './RenderTarget';
+import * as svg from './svgUtils';
+import UserStrokeRenderer, { UserStrokeProps } from './UserStrokeRenderer';
 
 export default class HanziWriterRenderer
   implements HanziWriterRendererBase<SVGElement | SVGSVGElement, SVGRenderTarget> {
@@ -30,12 +32,17 @@ export default class HanziWriterRenderer
     const positionedTarget = target.createSubRenderTarget();
     const group = positionedTarget.svg;
     const { xOffset, yOffset, height, scale } = this._positioner;
+    const i18n = this._character.i18n;
+    if (I18nCode.I18nCodeCN == i18n) {
+      svg.attr(
+        group,
+        'transform',
+        `translate(${xOffset}, ${height - yOffset}) scale(${scale}, ${-1 * scale})`,
+      );
+    } else {
+      svg.attr(group, 'transform', `translate(0, 0) scale(${scale}, ${scale})`);
+    }
 
-    svg.attr(
-      group,
-      'transform',
-      `translate(${xOffset}, ${height - yOffset}) scale(${scale}, ${-1 * scale})`,
-    );
     this._outlineCharRenderer.mount(positionedTarget);
     this._mainCharRenderer.mount(positionedTarget);
     this._highlightCharRenderer.mount(positionedTarget);

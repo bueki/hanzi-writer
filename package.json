@@ -1,6 +1,6 @@
 {
   "name": "hanzi-writer-cj",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Bueki (https://github.com/bueki/hanzi-writer/tree/feature/animCJK)",
   "description": "Fork From http://chanind.github.io/hanzi-writer/. Hanzi Writer CJ is a free and open-source javascript library for both animating simplified Chinese characters and quizzing users on character stroke order.Support animCJK svg",
   "repository": "bueki/hanzi-writer",

@@ -1,3 +1,5 @@
+import Mode from 'models/Mode';
+
 import { Point } from './typings/types';
 
 // All makemeahanzi characters have the same bounding box
@@ -10,6 +12,8 @@ const preScaledWidth = to.x - from.x;
 const preScaledHeight = to.y - from.y;
 
 export type PositionerOptions = {
+  /** Default: hanzi-writer-cj*/
+  mode: string;
   /** Default: 0 */
   width: number;
   /** Default: 0 */
@@ -19,6 +23,7 @@ export type PositionerOptions = {
 };
 
 export default class Positioner {
+  mode: string;
   padding: number;
   width: number;
   height: number;
@@ -27,7 +32,8 @@ export default class Positioner {
   scale: number;
 
   constructor(options: PositionerOptions) {
-    const { padding, width, height } = options;
+    const { mode, padding, width, height } = options;
+    this.mode = mode;
     this.padding = padding;
     this.width = width;
     this.height = height;
@@ -48,8 +54,13 @@ export default class Positioner {
   }
 
   convertExternalPoint(point: Point) {
-    const x = (point.x - this.xOffset) / this.scale;
-    const y = (this.height - this.yOffset - point.y) / this.scale;
+    if (this.mode == Mode.HANZI_WRITER) {
+      const x = (point.x - this.xOffset) / this.scale;
+      const y = (this.height - this.yOffset - point.y) / this.scale;
+      return { x, y };
+    }
+    const x = point.x / this.scale;
+    const y = point.y / this.scale;
     return { x, y };
   }
 }

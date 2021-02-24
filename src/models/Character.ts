@@ -1,12 +1,12 @@
 import Stroke from './Stroke';
 
 export default class Character {
-  i18n: string;
+  mode: string;
   symbol: string;
   strokes: Stroke[];
 
-  constructor(i18n: string, symbol: string, strokes: Stroke[]) {
-    this.i18n = i18n;
+  constructor(mode: string, symbol: string, strokes: Stroke[]) {
+    this.mode = mode;
     this.symbol = symbol;
     this.strokes = strokes;
   }

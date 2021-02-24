@@ -1,4 +1,4 @@
-import I18nCode from 'models/I18nCode';
+import Mode from 'models/Mode';
 
 import * as characterActions from './characterActions';
 import defaultOptions from './defaultOptions';
@@ -87,11 +87,11 @@ export default class HanziWriter {
     width: number,
     height: number,
     padding = 0,
-    i18n: string = I18nCode.I18nCodeJA,
+    mode: string = Mode.HANZI_WRITER_CJ,
   ) {
-    const positioner = new Positioner({ width, height, padding });
-    switch (i18n) {
-      case I18nCode.I18nCodeCN:
+    const positioner = new Positioner({ mode, width, height, padding });
+    switch (mode) {
+      case Mode.HANZI_WRITER:
         return {
           x: positioner.xOffset,
           y: positioner.yOffset,
@@ -407,7 +407,7 @@ export default class HanziWriter {
     if (this._renderState) {
       this._renderState.cancelAll();
     }
-    const i18n = this._options.i18n;
+    const mode = this._options.mode;
     this._hanziWriterRenderer = null;
     this._withDataPromise = this._loadingManager
       .loadCharData(char)
@@ -417,9 +417,9 @@ export default class HanziWriter {
           return;
         }
 
-        this._character = parseCharData(i18n, char, pathStrings);
+        this._character = parseCharData(mode, char, pathStrings);
         const { width, height, padding } = this._options;
-        this._positioner = new Positioner({ width, height, padding });
+        this._positioner = new Positioner({ mode, width, height, padding });
         const hanziWriterRenderer = new this._renderer.HanziWriterRenderer(
           this._character,
           this._positioner,

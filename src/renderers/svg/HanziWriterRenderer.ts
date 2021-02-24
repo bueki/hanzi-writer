@@ -1,4 +1,4 @@
-import I18nCode from 'models/I18nCode';
+import Mode from 'models/Mode';
 
 import Character from '../../models/Character';
 import Positioner from '../../Positioner';
@@ -32,8 +32,8 @@ export default class HanziWriterRenderer
     const positionedTarget = target.createSubRenderTarget();
     const group = positionedTarget.svg;
     const { xOffset, yOffset, height, scale } = this._positioner;
-    const i18n = this._character.i18n;
-    if (I18nCode.I18nCodeCN == i18n) {
+    const mode = this._character.mode;
+    if (Mode.HANZI_WRITER == mode) {
       svg.attr(
         group,
         'transform',

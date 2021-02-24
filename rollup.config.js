@@ -19,7 +19,7 @@ export default [
         exports: 'auto',
       },
       {
-        file: 'dist/hanzi-writer.min.js',
+        file: 'dist/hanzi-writer-cj.min.js',
         format: 'iife',
         name: 'HanziWriter',
         sourcemap: true,
@@ -27,7 +27,7 @@ export default [
         exports: 'default',
       },
       {
-        file: 'dist/hanzi-writer.js',
+        file: 'dist/hanzi-writer-cj.js',
         format: 'iife',
         name: 'HanziWriter',
         exports: 'default',
@@ -51,7 +51,7 @@ export default [
         babelHelpers: 'bundled',
       }),
       license({
-        banner: `Hanzi Writer v<%= pkg.version %> | https://chanind.github.io/hanzi-writer`,
+        banner: `Hanzi Writer CJ v<%= pkg.version %> | https://github.com/bueki/hanzi-writer/tree/feature/animCJK`,
       }),
     ],
   },

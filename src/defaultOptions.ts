@@ -2,7 +2,7 @@ import defaultCharDataLoader from './defaultCharDataLoader';
 import { HanziWriterOptions } from './typings/types';
 
 const defaultOptions: HanziWriterOptions = {
-  i18n: 'ja',
+  mode: 'hanzi-writer-cj',
   charDataLoader: defaultCharDataLoader,
   onLoadCharDataError: null,
   onLoadCharDataSuccess: null,

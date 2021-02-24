@@ -40,11 +40,11 @@ export type OnCompleteFunction = (res: { canceled: boolean }) => void;
 /** Creates a render target (e.g. svg, canvas) */
 export type RenderTargetInitFunction<
   TElement extends HTMLElement | SVGElement | SVGSVGElement | HTMLCanvasElement
-> = (
-  elmOrId: string | TElement,
-  width?: string | number | null,
-  height?: string | number | null,
-) => RenderTargetBase<TElement>;
+  > = (
+    elmOrId: string | TElement,
+    width?: string | number | null,
+    height?: string | number | null,
+  ) => RenderTargetBase<TElement>;
 
 export type StrokeData = {
   character: string;
@@ -78,8 +78,8 @@ export type LoadingManagerOptions = {
 };
 
 type BaseHanziWriterOptions = {
-  /** Default: ja */
-  i18n: 'ja' | 'zh-cn';
+  /** Default: hanzi-writer-cj */
+  mode: 'hanzi-writer-cj' | 'hanzi-writer';
   showOutline: boolean;
   showCharacter: boolean;
   /** Default: svg */

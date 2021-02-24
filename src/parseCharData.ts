@@ -1,4 +1,4 @@
-import I18nCode from 'models/I18nCode';
+import I18nCode from 'models/Mode';
 
 import Character from './models/Character';
 import Stroke from './models/Stroke';
@@ -15,7 +15,7 @@ function generateStrokes({ radStrokes, strokes, medians }: CharacterJson) {
   });
 }
 
-export default function parseCharData(i18n: string, symbol: string, charJson: CharacterJson) {
+export default function parseCharData(mode: string, symbol: string, charJson: CharacterJson) {
   const strokes = generateStrokes(charJson);
-  return new Character(i18n, symbol, strokes);
+  return new Character(mode, symbol, strokes);
 }
